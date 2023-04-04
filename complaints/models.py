@@ -4,6 +4,7 @@ from datetime import date
 from nltk.tokenize import word_tokenize
 
 from students.models import Student
+from halls.models import Hall
 
 # Definition of the Complaints class
 class Complaint(models.Model):
@@ -30,20 +31,26 @@ class Complaint(models.Model):
     submit_date = models.DateTimeField(auto_now_add=True)
     edited_date = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length = 12, editable = True, blank=False, null=False, default="Pending", choices=statuses)
+    #hall = models.ForeignKey(Hall, on_delete = models.CASCADE, to_field="name", related_name = "hall_complaints") #"""default = str(student.hall.name),"""
 
     #defining a property priority to Complaint instance
     @property
     def priority(self):
         stop_words = (
             "leaking",
+            "leak",
+            "leaks",
             "flood",
+            "flooding",
             "flooded",
             "bedbug",
-            "bedbugs"
+            "bedbugs",
             "rat",
+            "rats",
             "bed",
             "burn",
             "burnt",
+            "burned",
             "blew",
             "blow",
             "fire",
@@ -52,6 +59,8 @@ class Complaint(models.Model):
             "scattered",
             "scattering",
             "eaten",
+            "lock",
+            "locking",
         )
         #checks the details of the complaint against the stop words listed, then assigns an appropriate priority value
         detail_words = self.details
