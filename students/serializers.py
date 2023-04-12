@@ -18,9 +18,9 @@ class StudentSerializer(serializers.ModelSerializer):
             "othername",
             "matric",
             "email",
-            "hall",
-            "room_number",
-            "complaints",  
+            # "hall",
+            # "room_number",
+            # "complaints",  
     )
 
 #Serializer to Get User Details for Login using Django Token Authentication

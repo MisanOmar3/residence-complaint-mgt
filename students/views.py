@@ -7,7 +7,7 @@ from .models import Student, StudentUserManager
 from complaints.models import Complaint
 from complaints.serializers import ComplaintSerializer
 from .serializers import StudentSerializer, StudentLoginSerializer, StudentRegisterSerializer
-
+from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 
 class StudentCreateView(generics.CreateAPIView):
@@ -44,3 +44,9 @@ class StudentLoginView(APIView):
 class RegisterStudentView(generics.CreateAPIView):
   permission_classes = (permissions.AllowAny,)
   serializer_class = StudentRegisterSerializer
+
+  def post(self, request):
+    serializer = self.serializer_class(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        user = serializer.save()
+    return Response({'user': StudentSerializer(user, self.get_serializer_context()).data}, status=status.HTTP_201_CREATED,)
