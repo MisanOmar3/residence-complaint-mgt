@@ -1,16 +1,34 @@
 from django.db import models
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+from django.contrib.auth.models import UserManager, AbstractUser
 from halls.models import Hall
-import uuid 
+from django.contrib.auth.validators import UnicodeUsernameValidator
+import uuid
+from django.utils.translation import gettext_lazy as _
+
 
 #Definition of a user manager for the student class
+username_validation = UnicodeUsernameValidator()
 
-class User(AbstractBaseUser):    
+class User(AbstractUser):    
+    
+    GENDER_CHOICES = (('M', 'Male'),
+                      ('F', 'Female'),)
+
+    def profilePicture(instance, filename):
+        user = AbstractUser.username
+        return f'profile_pictures/{user}/picture {filename}'
+
+
+    
     id = models.UUIDField(primary_key=True, editable=False, default = uuid.uuid4, db_index=True)
-    email = models.EmailField(editable = True, unique = True, null = False)
-    lastname = models.CharField(max_length=15, editable = True, blank = False, null = False)
-    firstname = models.CharField(max_length=15, editable = True, blank = False, null = False)
+    username = models.CharField(_("username"), max_length=30, validators=[username_validation], error_messages={"unique": _("A user with that username already exists."), }, unique=True, help_text=_("Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."), default='John_doe')
+    firstname = models.CharField(_("first_name"), max_length=30, default='John')
+    lastname = models.CharField(_("last_name"), max_length=30, default='Doe')
+    email = models.EmailField(_("email"), unique=True,blank=False, default='default@gmail.com')
     othername = models.CharField(max_length=15, editable = True, blank = True, null = True)
+    gender = models.CharField(choices=GENDER_CHOICES,max_length=6, default='M')
+    profile_picture = models.FileField(upload_to=profilePicture, null=True, max_length=150, blank=True)
+
 
     @property
     def fullname(self):
@@ -21,39 +39,10 @@ class User(AbstractBaseUser):
         return fullname
 
 
-class StudentUserManager(BaseUserManager):
-    #Defining function for the creation of new users
-    def create_user(self, lastname, firstname, othername, matric, email, hall, password):
-        """
-        Creates and saves a User with the given email and password.
-        """
-        #confirming that created user has matriculation number
-        if not email:
-            raise ValueError('Users must have email address.')
-
-        #storing user attributes in a variable
-        user = self.model(
-            matric=self.matric,
-            hall = self.hall,
-            email = self.normalize_email(email),
-            firstname = self.firstname,
-            lastname = self.lastname,
-            othername = self.othername
-        )
-
-        #the following methods are extended from BaseUserManager
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
 #Definition of the student class
-class Student(User):
+class Student(models.Model):
     #defining class variables of Student
-    """id = models.UUIDField(primary_key=True, editable=False, default = uuid.uuid4, db_index=True)
-    firstname = models.CharField(max_length = 15, blank = False, null = False, editable = True)
-    lastname = models.CharField(max_length = 15, blank = False, null = False, editable = True)
-    othername = models.CharField(max_length = 15, blank = True, null = True, editable = True)
-    email = models.EmailField(editable=True, unique=True, null=False)"""
+    user = models.ForeignKey(User, blank=True, null=False, on_delete=models.CASCADE, related_name="student")
     hall = models.ForeignKey(Hall, on_delete = models.CASCADE, related_name="students", blank=True, null=True, to_field="name") #defining a foreign key relation to the Hall class
     room_number = models.CharField(max_length = 4, editable = True, null=True, blank=True)
     matric = models.CharField(max_length = 7, unique = True) #setting primary key to matric number field
@@ -61,17 +50,3 @@ class Student(User):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['matric','email']
     
-
-    """@property
-    def name(self):
-        name = self.lastname + " " + self.firstname 
-        if self.othername:
-            name+= " " + self.othername
-        return name"""
-
-    """@property
-    def complaints(self):
-        complaints = ComplaintSerializer(many = True)
-        return complaints"""
-    #defining the objects attribute as an instance of StudentUserManager class
-    objects = StudentUserManager()

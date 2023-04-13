@@ -1,18 +1,32 @@
-from django.shortcuts import render
-
-from django.shortcuts import render
-from rest_framework import generics, permissions
+from rest_framework.response import Response
+from rest_framework import generics, permissions,authentication
 from rest_framework.views import APIView
-from .models import Student, StudentUserManager
+from .models import Student, User
 from complaints.models import Complaint
 from complaints.serializers import ComplaintSerializer
-from .serializers import StudentSerializer, StudentLoginSerializer, StudentRegisterSerializer
+from .serializers import (
+    StudentsInformationSerializer, 
+    StudentLoginSerializer, 
+    StudentRegisterSerializer, 
+    StudentSerializer,
+    MyTokenObtainPairserializer,
+    )
 from rest_framework import status
-from rest_framework.authentication import TokenAuthentication
+# from rest_framework.authentication import TokenAuthentication
+from rest_framework_simplejwt.views import TokenObtainPairView
+# from rest_framework.authtoken.models import Token
+
+
+# Create your views here.
+
+
+    
+class MyTokenObtainView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairserializer
 
 class StudentCreateView(generics.CreateAPIView):
     queryset = Student.objects.all()
-    serializer_class = StudentSerializer
+    serializer_class = StudentsInformationSerializer
     def perform_create(self, serializer):
         if serializer.is_valid():
             instance_data = serializer.validated_data
@@ -27,18 +41,30 @@ class StudentUpdateView(generics.UpdateAPIView):
     queryset = Complaint.objects.all()
     serializer_class = ComplaintSerializer
     lookup_field = "pk"
-    def perform_update(self, serializer):
-        instance_data = serializer.validated_data
-        serializer.save(instance_data)
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (authentication.SessionAuthentication,)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.save()
+            
+        return Response({
+        "user": StudentSerializer(user, context=self.get_serializer_context()).data,
+    }, status=status.HTTP_200_OK)
 
 # Class based view to Get User Details using Token Authentication
-class StudentLoginView(APIView):
-  authentication_classes = (TokenAuthentication,)
-  permission_classes = (permissions.AllowAny,)
-  def get(self,request,*args,**kwargs):
-    user = Student.objects.get(email=request.user.id)
-    serializer = StudentLoginSerializer(user)
-    return Response(serializer.data)
+class StudentLoginView(generics.GenericAPIView):
+    serializer_class = StudentLoginSerializer
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.request.get('user')
+
+        return Response({StudentSerializer(user, context=self.get_serializer_context()).data,
+                        }, status=status.HTTP_200_OK)
 
 #Class based view to register user
 class RegisterStudentView(generics.CreateAPIView):
@@ -49,4 +75,8 @@ class RegisterStudentView(generics.CreateAPIView):
     serializer = self.serializer_class(data=request.data)
     if serializer.is_valid(raise_exception=True):
         user = serializer.save()
-    return Response({'user': StudentSerializer(user, self.get_serializer_context()).data}, status=status.HTTP_201_CREATED,)
+       
+    return Response({
+        "user": StudentSerializer(user, context=self.get_serializer_context()).data,
+
+    }, status=status.HTTP_201_CREATED)
