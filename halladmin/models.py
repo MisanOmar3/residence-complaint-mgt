@@ -22,7 +22,6 @@ class HallAdmin(AbstractBaseUser):
 
     def get_email(self):
         return self.user.email
->>>>>>> ec41c143c6d199f519295fa9694f78fcc881c137
 
 
     def __str__(self):
