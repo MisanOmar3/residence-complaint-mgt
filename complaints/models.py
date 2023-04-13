@@ -12,7 +12,6 @@ class Complaint(models.Model):
         ('carpentry','carpentry'),
         ('pest', 'pest'),
         ('plumbing', 'plumbing'),
-        ('furniture','furniture',),
         ('electrical','electrical'),
         ('other','other')
     )

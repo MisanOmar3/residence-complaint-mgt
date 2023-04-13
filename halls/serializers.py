@@ -9,8 +9,6 @@ class HallSerializer(serializers.ModelSerializer):
     halladmins = serializers.SlugRelatedField(read_only = True, slug_field = "name") #retrieves value from the Hall class
     #students = serializers.SlugRelatedField(read_only = True, slug_field = "matric") #retrieves value from the Student class
     students = StudentSerializer(many = True)
-    print(type(halladmins))
-    print(type(students))
     #students = serializers.SlugRelatedField(read_only=True, slug_field = "matric")#.fields[complaints]
 
     class Meta:
@@ -27,9 +25,11 @@ class HallSerializer(serializers.ModelSerializer):
         return students.complaints"""
 
 class HallListSerializer(serializers.ModelSerializer):
+    halladmins = serializers.SlugRelatedField(read_only = True, slug_field = "name") #retrieves value from the Hall class
     class Meta:
         model = Hall
         fields = (
             "name",
+            "halladmins",
         )  
    
