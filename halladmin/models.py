@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from halls.models import Hall
+from students.models import User
 
 #defining user manager for the HallAdmin class
 class AdminManager(BaseUserManager):
@@ -28,11 +29,9 @@ class AdminManager(BaseUserManager):
 #definition of the HallAdmin class
 class HallAdmin(AbstractBaseUser):
     #declaring the class variables
-    firstname = models.CharField(max_length = 15, blank = False, null = False, editable = True)
-    lastname = models.CharField(max_length = 15, blank = False, null = False, editable = True)
-    othername = models.CharField(max_length = 15, blank = True, null = True, editable = True)
-    email = models.EmailField(editable=True, unique=True, null=False)
+    user = models.ForeignKey(User, blank=True, null=False, on_delete=models.CASCADE)
     hall = models.OneToOneField(Hall, on_delete = models.CASCADE, related_name="halladmins") #defining a one-to-one relationship with the Hall class
+    staff_number = models.CharField(max_length=8, unique=True, null=False, default=None)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['email']

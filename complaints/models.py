@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from datetime import date
-from nltk.tokenize import word_tokenize
+# from nltk.tokenize import word_tokenize
 
 from students.models import Student
 from halls.models import Hall

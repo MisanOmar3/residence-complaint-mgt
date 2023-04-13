@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-#AUTH_USER_MODEL =""
+AUTH_USER_MODEL ="students.User"
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,10 +44,19 @@ INSTALLED_APPS = [
     'rest_framework',
     'students',
     'rest_framework.authtoken',
+    "rest_framework_simplejwt.token_blacklist",
     'halls',
     'halladmin',
     #'cors_headers',
 ]
+
+# simplejwt setup
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
+    "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": True,
+}
 
 CORS_ORIGIN_ALLOW_ALL = True
 
