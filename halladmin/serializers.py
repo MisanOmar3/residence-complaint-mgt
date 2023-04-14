@@ -12,7 +12,7 @@ class HallAdminInformationSerializer(serializers.ModelSerializer):
                 "name",
                 "staff_number",
                 "hall",
-                "get_email",
+                "email",
             )
 class HallAdminSerializer(serializers.ModelSerializer):
     halladmin = HallAdminInformationSerializer(many=True, read_only=True)
@@ -34,7 +34,6 @@ class RegisterHallAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-                "username",
                 "firstname",
                 "lastname",
                 "othername",
@@ -59,7 +58,6 @@ class RegisterHallAdminSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         halladmin = validated_data.pop('halladmin')
         user = User.objects.create_user(
-            username=validated_data['username'],
             email=validated_data['email'],
             password=validated_data['password'],
             firstname=validated_data['firstname'],
@@ -82,7 +80,7 @@ class MyTokenObtainPairserializer(TokenObtainPairSerializer):
       token = super().get_token(user)
 
       # Add custom claims
-      token['username'] = user.username
+      token['email'] = user.email
       # ...
 
       return token

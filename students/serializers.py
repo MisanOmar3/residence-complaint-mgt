@@ -69,7 +69,7 @@ class MyTokenObtainPairserializer(TokenObtainPairSerializer):
       token = super().get_token(user)
 
       # Add custom claims
-      token['username'] = user.username
+      token['email'] = user.email
       # ...
 
       return token
@@ -93,7 +93,6 @@ class StudentRegisterSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
     fields = (
-            "username",
             "firstname",
             "lastname",
             "othername",
@@ -118,7 +117,6 @@ class StudentRegisterSerializer(serializers.ModelSerializer):
   def create(self, validated_data):
     student = validated_data.pop('student')
     user = User.objects.create_user(
-        username=validated_data['username'],
         email=validated_data['email'],
         password=validated_data['password'],
         firstname=validated_data['firstname'],

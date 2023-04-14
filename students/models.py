@@ -21,7 +21,6 @@ class User(AbstractUser):
 
     
     id = models.UUIDField(primary_key=True, editable=False, default = uuid.uuid4, db_index=True)
-    username = models.CharField(_("username"), max_length=30, validators=[username_validation], error_messages={"unique": _("A user with that username already exists."), }, unique=True, help_text=_("Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."), default='John_doe')
     firstname = models.CharField(_("first_name"), max_length=30, default='John')
     lastname = models.CharField(_("last_name"), max_length=30, default='Doe')
     email = models.EmailField(_("email"), unique=True,blank=False, default='default@gmail.com')
@@ -29,6 +28,9 @@ class User(AbstractUser):
     gender = models.CharField(choices=GENDER_CHOICES,max_length=6, default='M')
     profile_picture = models.FileField(upload_to=profilePicture, null=True, max_length=150, blank=True)
 
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+    
 
     @property
     def fullname(self):
@@ -56,7 +58,6 @@ class Student(models.Model):
 
     def email(self):
         return self.user.email
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['matric','email']
     
+    
+ 

@@ -10,8 +10,6 @@ class HallAdmin(AbstractBaseUser):
     hall = models.OneToOneField(Hall, on_delete = models.CASCADE, related_name="halladmins") #defining a one-to-one relationship with the Hall class
     staff_number = models.CharField(max_length=8, unique=True, null=False, default=None)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['email',]
 
     @property
     def name(self):
