@@ -63,14 +63,19 @@ class Complaint(models.Model):
             "lock",
             "locking",
         ]
-        #checks the details of the complaint against the stop words listed, then assigns an appropriate priority value
-        detail_words = self.details
-        detail_words = detail_words.split(" ")
-        for x in detail_words:
-            for y in stop_words:
-                if x == y:
-                    return "high"
-        return "low"
+
+        if self.category == "pest":
+            return "high"
+
+        else:
+            #checks the details of the complaint against the stop words listed, then assigns an appropriate priority value
+            detail_words = self.details
+            detail_words = detail_words.split(" ")
+            for x in detail_words:
+                for y in stop_words:
+                    if x == y:
+                        return "high"
+            return "low"
         
         # for element, count in detail_words.items():
         #     if element  in stop_words and count>0:
