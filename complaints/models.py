@@ -38,30 +38,28 @@ class Complaint(models.Model):
     @property
     def priority(self):
         stop_words = [
-            "leaking",
-            "leak",
-            "leaks",
             "flood",
             "flooding",
             "flooded",
-            "bedbug",
-            "bedbugs",
-            "rat",
-            "rats",
-            "bed",
             "burn",
             "burnt",
             "burned",
-            "blew",
-            "blow",
             "fire",
             "melted",
             "melting",
-            "scattered",
-            "scattering",
-            "eaten",
             "lock",
             "locking",
+            #---
+            "socket",
+            "sockets",
+            "bed",
+            "beds", 
+            "light",
+            "lights",
+            "sink",
+            "toilet",
+            "door",
+            
         ]
 
         if self.category == "pest":
