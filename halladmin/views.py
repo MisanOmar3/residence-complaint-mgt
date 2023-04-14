@@ -2,6 +2,7 @@ from .serializers import (
     HallAdminSerializer, 
     RegisterHallAdminSerializer,
     MyTokenObtainPairserializer,
+    HallAdminInformationSerializer,
     )
 from rest_framework import generics, permissions,authentication, status
 from .models import HallAdmin
@@ -9,7 +10,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.response import Response
 
 class HallAdminListView(generics.ListAPIView):
-    serializer_class = HallAdminSerializer
+    serializer_class = HallAdminInformationSerializer
     queryset = HallAdmin.objects.all()
 
 class MyTokenObtainView(TokenObtainPairView):

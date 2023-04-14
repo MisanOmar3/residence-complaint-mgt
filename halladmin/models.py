@@ -20,7 +20,7 @@ class HallAdmin(AbstractBaseUser):
             name += " "+ self.user.othername
         return name
 
-    def get_email(self):
+    def email(self):
         return self.user.email
 
 

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Hall
 from students.models import Student
-from students.serializers import StudentSerializer
+from students.serializers import StudentSerializer, StudentComplaintSerializer
 from halladmin.serializers import HallAdminSerializer
 from complaints.serializers import ComplaintSerializer
 
@@ -32,4 +32,12 @@ class HallListSerializer(serializers.ModelSerializer):
             "name",
             "halladmins",
         )  
-   
+
+class HallComplaintSerializer(serializers.ModelSerializer):
+    students = StudentComplaintSerializer(many = True)
+    class Meta:
+        model = Hall
+        fields = (
+            "name",
+            "students",
+        )   

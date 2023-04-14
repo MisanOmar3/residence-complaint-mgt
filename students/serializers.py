@@ -13,7 +13,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 class StudentsInformationSerializer(serializers.ModelSerializer):
   class Meta:
     model = Student
-    fields = ('hall', 'room_number','matric',)
+    fields = ('name', 'hall', 'room_number','matric','email',)
     
     
 class StudentSerializer(serializers.ModelSerializer):
@@ -29,6 +29,14 @@ class StudentSerializer(serializers.ModelSerializer):
             "student",
             # "complaints",  
     )
+
+class StudentComplaintSerializer(serializers.ModelSerializer):
+	complaints = ComplaintSerializer(many = True, read_only = True)
+	class Meta:
+		model = Student
+		fields = (
+			"complaints",
+		) 
 
 #Serializer to Get User Details for Login using Django Token Authentication
 class StudentLoginSerializer(serializers.Serializer):

@@ -47,6 +47,16 @@ class Student(models.Model):
     room_number = models.CharField(max_length = 4, editable = True, null=True, blank=True)
     matric = models.CharField(max_length = 7, unique = True) #setting primary key to matric number field
 
+    @property
+    def name(self):
+        name = self.user.lastname + " " + self.user.firstname
+        if self.user.othername:
+            name += " "+ self.user.othername
+        return name
+
+    def email(self):
+        return self.user.email
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['matric','email']
     

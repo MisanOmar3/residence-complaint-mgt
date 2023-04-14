@@ -35,7 +35,7 @@ class StudentCreateView(generics.CreateAPIView):
         
 class StudentListView(generics.ListAPIView):
     queryset = Student.objects.all()
-    serializer_class = StudentSerializer
+    serializer_class = StudentsInformationSerializer
 
 class StudentUpdateView(generics.UpdateAPIView):
     queryset = Complaint.objects.all()

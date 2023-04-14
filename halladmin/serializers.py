@@ -12,6 +12,7 @@ class HallAdminInformationSerializer(serializers.ModelSerializer):
                 "name",
                 "staff_number",
                 "hall",
+                "get_email",
             )
 class HallAdminSerializer(serializers.ModelSerializer):
     halladmin = HallAdminInformationSerializer(many=True, read_only=True)
@@ -62,6 +63,7 @@ class RegisterHallAdminSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             password=validated_data['password'],
             firstname=validated_data['firstname'],
+            othername = validated_data['othername'],
             lastname=validated_data['lastname'],
             gender=validated_data['gender'],
             profile_picture=validated_data['profile_picture'],

@@ -1,4 +1,4 @@
-from .serializers import HallSerializer, HallListSerializer
+from .serializers import HallSerializer, HallListSerializer, HallComplaintSerializer
 from .models import Hall
 from rest_framework import generics
 
@@ -8,6 +8,10 @@ class HallListView(generics.ListAPIView):
 
 class HallCreateView(generics.CreateAPIView):
     serializer_class = HallSerializer
+    queryset = Hall.objects.all()
+
+class HallComplaintView(generics.ListAPIView):
+    serializer_class = HallComplaintSerializer
     queryset = Hall.objects.all()
 
 class HallDetailView(generics.RetrieveAPIView):
