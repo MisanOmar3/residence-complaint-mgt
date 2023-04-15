@@ -26,11 +26,15 @@ SECRET_KEY = 'django-insecure-oynkp9zwo-0e4u6mbtrcj78p^(*6_#a3@a$ki-92&@f)(whrt*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 AUTH_USER_MODEL ="students.User"
 # Application definition
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+STATIC_ROOT =os.path.join(BASE_DIR, 'staticfiles')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
