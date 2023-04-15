@@ -33,6 +33,7 @@ class Complaint(models.Model):
     edited_date = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length = 12, editable = True, blank=False, null=False, default="Pending", choices=statuses)
     #hall = models.ForeignKey(Hall, on_delete = models.CASCADE, to_field="name", related_name = "hall_complaints") #"""default = str(student.hall.name),"""
+    review = models.TextField(blank=True, null = True)
 
     #defining a property priority to Complaint instance
     @property
