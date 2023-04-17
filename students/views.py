@@ -10,6 +10,7 @@ from .serializers import (
     StudentRegisterSerializer, 
     StudentSerializer,
     MyTokenObtainPairserializer,
+    StudentComplaintSerializer,
     )
 from rest_framework import status
 # from rest_framework.authentication import TokenAuthentication
@@ -36,6 +37,14 @@ class StudentCreateView(generics.CreateAPIView):
 class StudentListView(generics.ListAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentsInformationSerializer
+
+class StudentComplaintListView(generics.ListAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentComplaintSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (authentication.SessionAuthentication,)
+    lookup_field = "pk"
+
 
 class StudentUpdateView(generics.UpdateAPIView):
     queryset = Complaint.objects.all()

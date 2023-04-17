@@ -3,7 +3,6 @@ from .models import Complaint
 from students.models import Student
 
 class ComplaintSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Complaint
         fields = [
@@ -34,3 +33,7 @@ class RegisterComplaintSerializer(serializers.ModelSerializer):
             data.save()
             return data
             
+class ReviewComplaintSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Complaint
+        fields = ("review",)

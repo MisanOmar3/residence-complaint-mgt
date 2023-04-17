@@ -13,6 +13,7 @@ class HallCreateView(generics.CreateAPIView):
 class HallComplaintView(generics.ListAPIView):
     serializer_class = HallComplaintSerializer
     queryset = Hall.objects.all()
+    lookup_field = "pk"
 
 class HallDetailView(generics.RetrieveAPIView):
     serializer_class = HallSerializer
