@@ -3,8 +3,7 @@ from rest_framework import generics, permissions, status
 
 from students import serializers
 from .models import Complaint
-from .serializers import ComplaintSerializer, RegisterComplaintSerializer, ReviewComplaintSerializer
-from rest_framework.response import Response
+from .serializers import ComplaintSerializer, RegisterComplaintSerializer
 
 
 class ComplaintCreateView(generics.CreateAPIView):
@@ -38,15 +37,15 @@ class ComplaintUpdateView(generics.UpdateAPIView):
         instance_data = serializer.validated_data
         serializer.save()
 
-class ComplaintReviewView(generics.UpdateAPIView):
-    queryset = Complaint.objects.all()
-    serializer_class = ReviewComplaintSerializer
-    lookup_field = "pk"
-    permission_classes = [permissions.IsAuthenticated]
+# class ComplaintReviewView(generics.UpdateAPIView):
+#     queryset = Complaint.objects.all()
+#     serializer_class = ReviewComplaintSerializer
+#     lookup_field = "pk"
+#     permission_classes = [permissions.IsAuthenticated]
 
-    def perform_update(self, serializer):
-        instance_data = serializer.validated_data
-        serializer.save()
+#     def perform_update(self, serializer):
+#         instance_data = serializer.validated_data
+#         serializer.save()
 
 
 class ComplaintDeleteView(generics.DestroyAPIView):

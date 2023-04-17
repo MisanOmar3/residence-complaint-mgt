@@ -33,7 +33,7 @@ class RegisterComplaintSerializer(serializers.ModelSerializer):
             data.save()
             return data
             
-class ReviewComplaintSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Complaint
-        fields = ("review",)
+# class ReviewComplaintSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Complaint
+#         fields = ("review",)
