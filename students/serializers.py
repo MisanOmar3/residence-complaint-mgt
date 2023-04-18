@@ -58,8 +58,8 @@ class StudentLoginSerializer(serializers.Serializer):
             user = User.objects.get(email=user['email'])
             return {
               'id': user.id,
-              'email': user.email
-              
+              'email': user.email,
+              'status': status.HTTP_200_OK
             }
         return ValidationError(_("Incorrect credentials"))
 
