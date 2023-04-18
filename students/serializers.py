@@ -8,6 +8,8 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.utils.translation import gettext_lazy as _
+
 
 #Serializer to get student data
 class StudentsInformationSerializer(serializers.ModelSerializer):
@@ -73,10 +75,7 @@ class MyTokenObtainPairserializer(TokenObtainPairSerializer):
       # ...
 
       return token
-  
-  class Meta:
-    model = Student
-    fields = ("id","email")
+
     
       
     
@@ -93,10 +92,10 @@ class StudentRegisterSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
     fields = (
+            "username",
             "firstname",
             "lastname",
             "othername",
-			      "username",
             "email",
             "gender",
             "student",
@@ -118,7 +117,7 @@ class StudentRegisterSerializer(serializers.ModelSerializer):
   def create(self, validated_data):
     student = validated_data.pop('student')
     user = User.objects.create(
-        # username = None,
+        username = validated_data['username'],
         email=validated_data['email'],
         password=validated_data['password'],
         firstname=validated_data['firstname'],

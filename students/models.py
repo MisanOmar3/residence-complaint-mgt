@@ -28,7 +28,7 @@ class User(AbstractUser):
     profile_picture = models.FileField(upload_to=profilePicture, null=True, max_length=150, blank=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['firstname', 'lastname']
+    REQUIRED_FIELDS = ['firstname', 'lastname', 'username']
     
 
     @property
