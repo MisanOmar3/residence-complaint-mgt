@@ -22,6 +22,7 @@ class HallAdminSerializer(serializers.ModelSerializer):
             "firstname",
             "lastname",
             "othername",
+            # "username",
             "email",
             "halladmin",
     )
@@ -37,6 +38,7 @@ class RegisterHallAdminSerializer(serializers.ModelSerializer):
                 "firstname",
                 "lastname",
                 "othername",
+                "username",
                 "email",
                 "gender",
                 "halladmin",
@@ -58,6 +60,7 @@ class RegisterHallAdminSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         halladmin = validated_data.pop('halladmin')
         user = User.objects.create_user(
+            username = validated_data['username'],
             email=validated_data['email'],
             password=validated_data['password'],
             firstname=validated_data['firstname'],

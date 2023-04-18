@@ -6,7 +6,6 @@ import uuid
 from django.utils.translation import gettext_lazy as _
 
 
-#Definition of a user manager for the student class
 username_validation = UnicodeUsernameValidator()
 
 class User(AbstractUser):    
@@ -18,9 +17,9 @@ class User(AbstractUser):
         user = AbstractUser.username
         return f'profile_pictures/{user}/picture {filename}'
 
-
     
     id = models.UUIDField(primary_key=True, editable=False, default = uuid.uuid4, db_index=True)
+    username = models.CharField(_("username"), max_length=30, default="username", null=True, blank=True)
     firstname = models.CharField(_("first_name"), max_length=30, default='John')
     lastname = models.CharField(_("last_name"), max_length=30, default='Doe')
     email = models.EmailField(_("email"), unique=True,blank=False, default='default@gmail.com')
@@ -29,7 +28,7 @@ class User(AbstractUser):
     profile_picture = models.FileField(upload_to=profilePicture, null=True, max_length=150, blank=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['firstname', 'lastname']
     
 
     @property

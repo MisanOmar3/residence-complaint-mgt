@@ -76,7 +76,7 @@ class MyTokenObtainPairserializer(TokenObtainPairSerializer):
   
   class Meta:
     model = Student
-    fields = ("email", "password")
+    fields = ("id","email")
     
       
     
@@ -96,12 +96,13 @@ class StudentRegisterSerializer(serializers.ModelSerializer):
             "firstname",
             "lastname",
             "othername",
+			      "username",
             "email",
             "gender",
             "student",
             "password",
             "password2",
-            "profile_picture",
+            # "profile_picture",
             
     )
     extra_kwargs = {
@@ -116,14 +117,15 @@ class StudentRegisterSerializer(serializers.ModelSerializer):
     return attrs
   def create(self, validated_data):
     student = validated_data.pop('student')
-    user = User.objects.create_user(
+    user = User.objects.create(
+        # username = None,
         email=validated_data['email'],
         password=validated_data['password'],
         firstname=validated_data['firstname'],
         lastname=validated_data['lastname'],
         othername=validated_data['othername'],
         gender=validated_data['gender'],
-        profile_picture=validated_data['profile_picture'],
+        # profile_picture=validated_data['profile_picture'],
     )
     Student.objects.create(user=user, **student)
     return user
