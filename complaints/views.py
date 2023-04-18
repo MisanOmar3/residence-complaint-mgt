@@ -9,7 +9,7 @@ from .serializers import ComplaintSerializer, RegisterComplaintSerializer
 class ComplaintCreateView(generics.CreateAPIView):
     queryset = Complaint.objects.all()
     serializer_class = RegisterComplaintSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     def post(self, reqquest):
         serializer = self.serializer_class(data=reqquest.data)
         if serializer.is_valid(raise_exception=True):
@@ -24,14 +24,14 @@ class ComplaintCreateView(generics.CreateAPIView):
 class ComplaintListView(generics.ListAPIView):
     queryset = Complaint.objects.all()
     serializer_class = ComplaintSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
 
 class ComplaintUpdateView(generics.UpdateAPIView):
     queryset = Complaint.objects.all()
     serializer_class = ComplaintSerializer
     lookup_field = "pk"
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def perform_update(self, serializer):
         instance_data = serializer.validated_data
