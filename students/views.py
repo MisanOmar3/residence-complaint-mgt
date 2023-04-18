@@ -72,7 +72,7 @@ class StudentLoginView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.request.get('user')
 
-        return Response({StudentSerializer(user, context=self.get_serializer_context()).data, status=status.HTTP_200_OK,
+        return Response({StudentSerializer(user, context=self.get_serializer_context()).data, status.HTTP_200_OK,
                         })
 
 #Class based view to register user
